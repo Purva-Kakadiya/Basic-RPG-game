@@ -326,7 +326,8 @@ MonoBehaviour:
   groundDistance: 0.2
   feetPosition: {fileID: 1311765302}
   gameInput: {fileID: 362322116}
-  fallSpeed: 10
+  fallSpeed: 2
+  jumpForce: 5
 --- !u!4 &356763705
 Transform:
   m_ObjectHideFlags: 0
@@ -394,6 +395,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 304423f7a98c1e244b8c2ed4732ac6c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameInput
+  player: {fileID: 356763704}
 --- !u!4 &362322117
 Transform:
   m_ObjectHideFlags: 0

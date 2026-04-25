@@ -3,14 +3,23 @@ using UnityEngine;
 
 public class GameInput : MonoBehaviour {
 
+    [SerializeField] private Player player;
+
     private Vector2 inputVector;
     private float emoteTimer;
     private bool isWalking;
     private InputSystem_Actions inputActions;
+    private const float JUMP_PRESSED = 1f;
 
     private void Awake() { 
         inputActions = new InputSystem_Actions();
         inputActions.Player.Enable();
+    }
+
+    private void FixedUpdate() {
+        if (JUMP_PRESSED == inputActions.Player.Jump.ReadValue<float>()) {
+            player.Jump();
+        }
     }
     public Vector2 GetMovementNormalized() {
 

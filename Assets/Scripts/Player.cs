@@ -8,7 +8,8 @@ public class Player : MonoBehaviour {
     [SerializeField] private float groundDistance = 0.2f;
     [SerializeField] private Transform feetPosition;
     [SerializeField] private GameInput gameInput;
-    [SerializeField]private float fallSpeed = 10f;
+    [SerializeField] private float fallSpeed = 10f;
+    [SerializeField] private float jumpForce = 5f;
 
     private BoxCollider boxCollider;
     private float downForce;
@@ -37,10 +38,13 @@ public class Player : MonoBehaviour {
         RaycastHit hit;
         Vector3 boxSize = new Vector3(boxCollider.bounds.size.x, 0.01f, boxCollider.bounds.size.z / 2);
         if (Physics.BoxCast(feetPosition.position, boxSize, Vector3.down, out hit, Quaternion.identity, groundDistance, Ground)) {
-            Debug.Log(hit.collider.name);
             return true;
         }
         return false;
-        }
+    }
+
+    public void Jump() {
+        transform.position += Vector3.up * jumpForce * Time.deltaTime;
+    }
 
 }

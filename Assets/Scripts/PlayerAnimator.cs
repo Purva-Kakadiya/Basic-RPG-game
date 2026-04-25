@@ -5,6 +5,7 @@ public class PlayerAnimator : MonoBehaviour {
     [SerializeField] private GameInput gameInput;
 
     private Animator animator;
+    private float emoteTimer;
     private const string SAY_HI = "SayHi";
     private const string IS_WALKING = "IsWalking";
 
