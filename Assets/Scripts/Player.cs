@@ -5,17 +5,21 @@ public class Player : MonoBehaviour {
 
     [SerializeField] private LayerMask Ground;
     [SerializeField] private float movementSpeed = 8f;
-    [SerializeField] private float groundDistance = 0.2f;
+    [SerializeField] private float groundDistance = 0.1f;
     [SerializeField] private Transform feetPosition;
     [SerializeField] private GameInput gameInput;
     [SerializeField] private float fallSpeed = 10f;
     [SerializeField] private float jumpForce = 5f;
 
     private BoxCollider boxCollider;
+    private CharacterController characterController;
     private float downForce;
+    private float verticalVelocity;
 
     private void Awake() {
         boxCollider = GetComponent<BoxCollider>();
+        characterController = GetComponent<CharacterController>();
+
     }
 
     private void Update() {
@@ -23,15 +27,18 @@ public class Player : MonoBehaviour {
 
         Vector2 inputVector = gameInput.GetMovementNormalized();
         Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
-        transform.position += moveDir * movementSpeed * Time.deltaTime;
-    }
+        characterController.Move(moveDir * movementSpeed * Time.deltaTime);
 
-    private void FixedUpdate() {
         if (IsGrounded()) {
-            downForce = 0f;
+            verticalVelocity = 0f;
         } else {
-            downForce = fallSpeed * Time.deltaTime;
+            if (verticalVelocity > 0f) {
+                verticalVelocity -= fallSpeed * Time.deltaTime;
+            } else {
+                verticalVelocity -= fallSpeed * 2 * Time.deltaTime;
+            }
         }
+        characterController.Move(Vector3.up * verticalVelocity * Time.deltaTime);
     }
 
     public bool IsGrounded() {
@@ -44,7 +51,10 @@ public class Player : MonoBehaviour {
     }
 
     public void Jump() {
-        transform.position += Vector3.up * jumpForce * Time.deltaTime;
+        if (IsGrounded()) {
+            verticalVelocity = jumpForce;
+            characterController.Move(Vector3.up * verticalVelocity * Time.deltaTime);
+        }
     }
 
 }
