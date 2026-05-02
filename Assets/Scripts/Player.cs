@@ -10,16 +10,19 @@ public class Player : MonoBehaviour {
     [SerializeField] private GameInput gameInput;
     [SerializeField] private float fallSpeed = 10f;
     [SerializeField] private float jumpForce = 5f;
+    [SerializeField] private UI_Inventory uiInventory;
 
     private BoxCollider boxCollider;
     private CharacterController characterController;
     private float downForce;
     private float verticalVelocity;
+    private Inventory inventory;
 
     private void Awake() {
         boxCollider = GetComponent<BoxCollider>();
         characterController = GetComponent<CharacterController>();
-
+        inventory = new Inventory();
+        uiInventory.SetInventory(inventory);
     }
 
     private void Update() {
@@ -39,11 +42,17 @@ public class Player : MonoBehaviour {
             }
         }
         characterController.Move(Vector3.up * verticalVelocity * Time.deltaTime);
+
+        if(Input.GetKeyDown(KeyCode.F)) {
+            inventory.AddItem(new Item { itemType = Item.ItemType.Weapon, amount = 1 });
+            uiInventory.AddItemToInventory();
+        }
     }
 
     public bool IsGrounded() {
         RaycastHit hit;
         Vector3 boxSize = new Vector3(boxCollider.bounds.size.x, 0.01f, boxCollider.bounds.size.z / 2);
+
         if (Physics.BoxCast(feetPosition.position, boxSize, Vector3.down, out hit, Quaternion.identity, groundDistance, Ground)) {
             return true;
         }

@@ -1,16 +1,25 @@
 using UnityEngine;
+using System.Collections.Generic;
 
-public class Inventory : MonoBehaviour
-{
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
+public class Inventory {
+
+    private List<Item> itemList;
+
+    public Inventory() {
+        itemList = new List<Item>();
+
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public void AddItem(Item item) {
+        itemList.Add(item);
     }
+
+    public int GetItemCount() {
+        return itemList.Count;
+    }
+
+    public List<Item> GetItemList() {
+        return itemList;
+    }
+
 }
