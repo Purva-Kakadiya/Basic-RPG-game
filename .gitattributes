@@ -1,0 +1,5 @@
+# Ignore Unity layout files from language stats
+*.wlt linguist-generated=true
+
+# Optional: Ensure C# is prioritized
+*.cs linguist-detectable=true
