@@ -11,12 +11,16 @@ public class Player : MonoBehaviour {
     [SerializeField] private float fallSpeed = 10f;
     [SerializeField] private float jumpForce = 5f;
     [SerializeField] private UI_Inventory uiInventory;
+    [SerializeField] private Canvas InventoryManager;
 
     private BoxCollider boxCollider;
     private CharacterController characterController;
     private float downForce;
     private float verticalVelocity;
     private Inventory inventory;
+    private float inventoryCooldownTimer;
+    private const float inventoryCooldown = 0.5f;
+    private bool isInventoryOpen = false;
 
     private void Awake() {
         boxCollider = GetComponent<BoxCollider>();
@@ -47,6 +51,11 @@ public class Player : MonoBehaviour {
             inventory.AddItem(new Item { itemType = Item.ItemType.Weapon, amount = 1 });
             uiInventory.AddItemToInventory();
         }
+        if(inventoryCooldownTimer > 0f) {
+            inventoryCooldownTimer -= Time.deltaTime;
+        } else {
+            inventoryCooldownTimer = 0f;
+        }
     }
 
     public bool IsGrounded() {
@@ -63,6 +72,20 @@ public class Player : MonoBehaviour {
         if (IsGrounded()) {
             verticalVelocity = jumpForce;
             characterController.Move(Vector3.up * verticalVelocity * Time.deltaTime);
+        }
+    }
+
+    public void OpneCloseInventory() {
+        if (inventoryCooldownTimer <= 0f) {
+            if (isInventoryOpen) {
+                InventoryManager.gameObject.SetActive(false);
+                inventoryCooldownTimer = inventoryCooldown;
+                isInventoryOpen = false;
+            } else {
+                InventoryManager.gameObject.SetActive(true);
+                inventoryCooldownTimer = inventoryCooldown;
+                isInventoryOpen = true;
+            }
         }
     }
 

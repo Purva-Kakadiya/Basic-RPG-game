@@ -9,7 +9,7 @@ public class GameInput : MonoBehaviour {
     private float emoteTimer;
     private bool isWalking;
     private InputSystem_Actions inputActions;
-    private const float JUMP_PRESSED = 1f;
+    private const float BUTTON_PRESSED = 1f;
 
     private void Awake() { 
         inputActions = new InputSystem_Actions();
@@ -17,10 +17,14 @@ public class GameInput : MonoBehaviour {
     }
 
     private void FixedUpdate() {
-        if (JUMP_PRESSED == inputActions.Player.Jump.ReadValue<float>()) {
+        if (BUTTON_PRESSED == inputActions.Player.Jump.ReadValue<float>()) {
             player.Jump();
         }
+        if(BUTTON_PRESSED == inputActions.Player.Inventory.ReadValue<float>()) {
+            player.OpneCloseInventory();
+        }
     }
+
     public Vector2 GetMovementNormalized() {
 
         inputVector = inputActions.Player.Move.ReadValue<Vector2>();
