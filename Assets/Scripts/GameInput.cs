@@ -20,10 +20,11 @@ public class GameInput : MonoBehaviour {
         if (BUTTON_PRESSED == inputActions.Player.Jump.ReadValue<float>()) {
             player.Jump();
         }
-        if (BUTTON_PRESSED == inputActions.Player.Inventory.ReadValue<float>()) {
-            player.OpenCloseInventory();
+        if(BUTTON_PRESSED == inputActions.Player.Inventory.ReadValue<float>()) {
+            player.OpneCloseInventory();
         }
     }
+
     public Vector2 GetMovementNormalized() {
 
         inputVector = inputActions.Player.Move.ReadValue<Vector2>();
