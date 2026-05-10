@@ -18,8 +18,8 @@ public class Player : MonoBehaviour {
     private float downForce;
     private float verticalVelocity;
     private Inventory inventory;
-    private float inventoryTimer;
-    private const float INVENTORY_COOLDOWN_TIME = 0.5f;
+    private float inventoryCooldownTimer;
+    private const float inventoryCooldown = 0.5f;
     private bool isInventoryOpen = false;
 
     private void Awake() {
@@ -52,10 +52,10 @@ public class Player : MonoBehaviour {
             inventory.AddItem(newItem);
             uiInventory.AddItemToInventory(newItem);
         }
-        if (inventoryTimer > 0f) {
-            inventoryTimer -= Time.deltaTime;
+        if(inventoryCooldownTimer > 0f) {
+            inventoryCooldownTimer -= Time.deltaTime;
         } else {
-            inventoryTimer = 0f;
+            inventoryCooldownTimer = 0f;
         }
     }
 
@@ -76,15 +76,15 @@ public class Player : MonoBehaviour {
         }
     }
 
-    public void OpenCloseInventory() {
-        if(inventoryTimer <= 0f) {
-            if(isInventoryOpen) {
-                uiInventory.gameObject.SetActive(false);
-                inventoryTimer = INVENTORY_COOLDOWN_TIME;
+    public void OpneCloseInventory() {
+        if (inventoryCooldownTimer <= 0f) {
+            if (isInventoryOpen) {
+                InventoryManager.gameObject.SetActive(false);
+                inventoryCooldownTimer = inventoryCooldown;
                 isInventoryOpen = false;
             } else {
-                uiInventory.gameObject.SetActive(true);
-                inventoryTimer = INVENTORY_COOLDOWN_TIME;
+                InventoryManager.gameObject.SetActive(true);
+                inventoryCooldownTimer = inventoryCooldown;
                 isInventoryOpen = true;
             }
         }

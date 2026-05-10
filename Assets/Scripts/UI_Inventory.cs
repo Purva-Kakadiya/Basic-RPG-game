@@ -9,15 +9,7 @@ public class UI_Inventory : MonoBehaviour {
     [SerializeField] private Transform itemSlotTemplete;
 
     private Inventory inventory;
-    private const int MAX_INVENTORY_SLOTS = 32;
-    private Transform itemSlotRectTransform;
-
-    private void Awake() {
-        Player player = GameObject.Find("Player").GetComponent<Player>();
-        inventory = player.GetInventory();
-
-        RefreshInventoryItems();
-    }
+    private const int maxInventorySlots = 32;
 
     public void SetInventory(Inventory inventory) {
         this.inventory = inventory;
@@ -40,5 +32,5 @@ public class UI_Inventory : MonoBehaviour {
             image.sprite = sprite;
         }
     }
-
 }
+
