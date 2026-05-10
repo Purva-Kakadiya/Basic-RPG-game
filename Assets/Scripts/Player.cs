@@ -11,7 +11,7 @@ public class Player : MonoBehaviour {
     [SerializeField] private float fallSpeed = 10f;
     [SerializeField] private float jumpForce = 5f;
     [SerializeField] private UI_Inventory uiInventory;
-    [SerializeField] private Canvas InventoryManager;
+    //[SerializeField] private Canvas InventoryManager;
 
     private BoxCollider boxCollider;
     private CharacterController characterController;
@@ -26,7 +26,7 @@ public class Player : MonoBehaviour {
         boxCollider = GetComponent<BoxCollider>();
         characterController = GetComponent<CharacterController>();
         inventory = new Inventory();
-        uiInventory.SetInventory(inventory);
+        //uiInventory.SetInventory(inventory);
     }
 
     private void Update() {
@@ -48,8 +48,9 @@ public class Player : MonoBehaviour {
         characterController.Move(Vector3.up * verticalVelocity * Time.deltaTime);
 
         if(Input.GetKeyDown(KeyCode.F)) {
-            inventory.AddItem(new Item { itemType = Item.ItemType.Weapon, amount = 1 });
-            uiInventory.AddItemToInventory();
+            Item newItem = new Item { itemType = Item.ItemType.Dagger, amount = 1 };
+            inventory.AddItem(newItem);
+            uiInventory.AddItemToInventory(newItem);
         }
         if (inventoryTimer > 0f) {
             inventoryTimer -= Time.deltaTime;
@@ -78,15 +79,19 @@ public class Player : MonoBehaviour {
     public void OpenCloseInventory() {
         if(inventoryTimer <= 0f) {
             if(isInventoryOpen) {
-                InventoryManager.gameObject.SetActive(false);
+                uiInventory.gameObject.SetActive(false);
                 inventoryTimer = INVENTORY_COOLDOWN_TIME;
                 isInventoryOpen = false;
             } else {
-                InventoryManager.gameObject.SetActive(true);
+                uiInventory.gameObject.SetActive(true);
                 inventoryTimer = INVENTORY_COOLDOWN_TIME;
                 isInventoryOpen = true;
             }
         }
+    }
+
+    public Inventory GetInventory() {
+        return inventory;
     }
 
 }

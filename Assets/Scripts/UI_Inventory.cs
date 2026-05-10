@@ -1,33 +1,44 @@
+using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class UI_Inventory : MonoBehaviour {
 
-    [SerializeField] private GameObject itemPrefab;
-    [SerializeField] private Transform inventoryGrid;
-    [SerializeField] private GameObject itemSlotPrefab;
+    [SerializeField] private Transform itemSlotContainer;
+    [SerializeField] private Transform itemSlotTemplete;
 
     private Inventory inventory;
     private const int MAX_INVENTORY_SLOTS = 32;
+    private Transform itemSlotRectTransform;
+
+    private void Awake() {
+        Player player = GameObject.Find("Player").GetComponent<Player>();
+        inventory = player.GetInventory();
+
+        RefreshInventoryItems();
+    }
 
     public void SetInventory(Inventory inventory) {
         this.inventory = inventory;
         RefreshInventoryItems();
     }
 
-    public void AddItemToInventory() {
-        Instantiate(itemPrefab, inventoryGrid);
+    public void AddItemToInventory(Item item) {
+        itemSlotRectTransform = Instantiate(itemSlotTemplete, itemSlotContainer);
+        itemSlotRectTransform.gameObject.SetActive(true);
     }
 
     public void RefreshInventoryItems() { 
-        for(int i = 1; i <= MAX_INVENTORY_SLOTS; i++) {
-            RectTransform itemRect = Instantiate(itemSlotPrefab, inventoryGrid).GetComponent<RectTransform>();
-            inventoryGrid.gameObject.SetActive(true);
+        foreach(Item item in inventory.itemList) {
+            itemSlotRectTransform = Instantiate(itemSlotTemplete, itemSlotContainer);
+            itemSlotRectTransform.gameObject.SetActive(true);
+
+            Transform imageTransform = itemSlotRectTransform.Find("Image");
+            Image image = itemSlotRectTransform.Find("Image").GetComponent<Image>();
+            Sprite sprite = item.GetSprite();
+            image.sprite = sprite;
         }
-        //foreach(Item item in inventory.GetItemList()) {
-        //    RectTransform itemRect = Instantiate(itemSlotPrefab, inventoryGrid).GetComponent<RectTransform>();
-        //    inventoryGrid.gameObject.SetActive(true);
-        //} 
     }
 
 }
